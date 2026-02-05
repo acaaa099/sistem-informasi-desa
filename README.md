@@ -63,7 +63,6 @@ Sistem ini memudahkan warga dalam pengajuan surat serta membantu perangkat desa 
 ### Tools
 - GitHub
 - Netlify (Frontend Hosting)
-- InfinityFree (Backend Hosting)
 - phpMyAdmin
 
 ---
