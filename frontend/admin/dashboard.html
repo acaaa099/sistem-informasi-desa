@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="admin-layout">
+  <aside class="sidebar">
+    <h2>Admin Desa</h2>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="pengajuan.html">Pengajuan Surat</a>
+    <a href="../profil.html">Profil Desa</a>
+    <a href="#" onclick="doLogout('../login.html')" style="margin-top:10px;color:#facc15;font-weight:700">Logout</a>
+  </aside>
+
+  <main class="admin-main">
+    <h1>Dashboard</h1>
+    <p style="color:#64748b;margin-top:6px">Ringkasan statistik kependudukan</p>
+
+    <div class="stats">
+      <div class="card"><h3 id="total">0</h3><p>Total Penduduk</p></div>
+      <div class="card"><h3 id="laki">0</h3><p>Laki-laki</p></div>
+      <div class="card"><h3 id="perempuan">0</h3><p>Perempuan</p></div>
+      <div class="card"><h3 id="dusun">0</h3><p>Dusun</p></div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h3>Grafik Penduduk</h3>
+      <canvas id="chartPenduduk" height="140"></canvas>
+    </div>
+  </main>
+</div>
+
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

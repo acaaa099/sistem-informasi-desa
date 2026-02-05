@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login | Desa Digital</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+<div class="auth-wrap">
+  <div class="auth-box">
+    <div class="auth-visual">
+      <div>
+        <h2>Selamat datang</h2>
+        <p style="opacity:.9;margin:8px 0 0">Login untuk akses layanan dan dashboard.</p>
+      </div>
+    </div>
+
+    <div class="auth-form">
+      <h2>Login</h2>
+      <p>Masukkan username & password.</p>
+
+      <form id="loginForm">
+        <input class="input" id="username" placeholder="Username" />
+        <input class="input" id="password" type="password" placeholder="Password" />
+        <button class="btn btn-primary full" type="submit">Masuk</button>
+      </form>
+
+      <div id="loginError" class="err"></div>
+      <p style="margin-top:12px">
+        Belum punya akun? <a href="register.html"><b>Daftar</b></a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

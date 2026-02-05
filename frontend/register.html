@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Daftar | Desa Digital</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+<div class="auth-wrap">
+  <div class="auth-box">
+    <div class="auth-visual">
+      <div>
+        <h2>Buat Akun Warga</h2>
+        <p style="opacity:.9;margin:8px 0 0">Akun untuk akses layanan publik.</p>
+      </div>
+    </div>
+
+    <div class="auth-form">
+      <h2>Register</h2>
+      <p>Username unik, password min 6 karakter.</p>
+
+      <form id="registerForm">
+        <input class="input" id="reg_username" placeholder="Username" />
+        <input class="input" id="reg_password" type="password" placeholder="Password" />
+        <button class="btn btn-primary full" type="submit">Daftar</button>
+      </form>
+
+      <div id="reg_msg" class="err"></div>
+      <p style="margin-top:12px">
+        Sudah punya akun? <a href="login.html"><b>Login</b></a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

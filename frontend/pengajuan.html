@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pengajuan Surat</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+<header class="navbar">
+  <div class="container">
+    <div class="logo">
+      <img src="assets/img/logo.png" alt="Desa Digital">
+      <span>Desa Digital</span>
+    </div>
+    <nav>
+      <a href="index.html">Beranda</a>
+      <a href="profil.html">Profil Desa</a>
+      <a href="tracking.html">Tracking</a>
+      <a class="btn btn-primary" href="login.html">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<section class="section" style="margin-top:72px">
+  <div class="container">
+    <h2>Pengajuan Surat Online</h2>
+    <div class="card" style="margin-top:14px">
+      <form id="pengajuanForm">
+        <input class="input" id="nik" placeholder="NIK (harus ada di data warga)" />
+        <input class="input" id="nama" placeholder="Nama" />
+        <select class="input" id="jenis">
+         <option value="">-- Pilih Jenis Surat --</option>
+        </select>
+        <textarea class="input" id="keperluan" placeholder="Keperluan..." style="height:120px"></textarea>
+        <button class="btn btn-primary full" type="submit">Kirim Pengajuan</button>
+      </form>
+      <p style="color:#64748b;margin:10px 0 0">
+        Setelah terkirim, kamu akan mendapatkan <b>kode tracking</b> untuk cek status.
+      </p>
+    </div>
+  </div>
+</section>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

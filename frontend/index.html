@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sistem Informasi Desa Digital</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+<header class="navbar">
+  <div class="container">
+    <div class="logo">
+      <img src="assets/img/logo.png" alt="Desa Digital">
+      <span>Desa Digital</span>
+    </div>
+
+    <nav>
+      <a href="profil.html">Profil Desa</a>
+      <a href="pengajuan.html">Pengajuan Surat</a>
+      <a href="tracking.html">Tracking</a>
+      <a id="btnLogin" class="btn btn-primary" href="login.html">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <h1>Pelayanan Desa<br/>lebih cepat & transparan</h1>
+    <p>
+      Prototype Sistem Informasi Desa Digital untuk data kependudukan, surat-menyurat online,
+      tracking status, dan profil potensi desa.
+    </p>
+    <div class="actions">
+      <a class="btn btn-primary" href="pengajuan.html">Ajukan Surat</a>
+      <a class="btn btn-ghost" href="profil.html">Lihat Profil Desa</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2>Fitur Utama</h2>
+    <div class="grid-4" style="margin-top:16px">
+      <div class="card"><h3>Multi-role</h3><p>Admin, Kepala Desa, Sekretaris, Kaur.</p></div>
+      <div class="card"><h3>Surat Online</h3><p>Pengajuan domisili/usaha/dll.</p></div>
+      <div class="card"><h3>Tracking</h3><p>Cek status lewat kode tracking.</p></div>
+      <div class="card"><h3>Profil Desa</h3><p>Geografis, potensi UMKM & galeri.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- GUARD: wajib login -->
+<script src="assets/js/config.js"></script>
+<script src="assets/js/auth.js"></script>
+<script>
+  (async () => {
+    const me = await authMe();
+    if (!me) {
+      location.href = "login.html";
+      return;
+    }
+
+    // ganti tombol login jadi logout
+    const btnLogin = document.getElementById("btnLogin");
+    if (btnLogin) {
+      btnLogin.outerHTML = `<a class="btn btn-primary" href="#" onclick="doLogout('login.html')">Logout</a>`;
+    }
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Profil Desa</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+<header class="navbar">
+  <div class="container">
+    <div class="logo">
+      <img src="assets/img/logo.png" alt="Desa Digital">
+      <span>Desa Digital</span>
+    </div>
+    <nav>
+      <a href="index.html">Beranda</a>
+      <a href="pengajuan.html">Pengajuan</a>
+      <a href="tracking.html">Tracking</a>
+      <a class="btn btn-primary" href="login.html">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<section class="section" style="margin-top:72px">
+  <div class="container">
+    <h2 id="namaDesa">Profil Desa</h2>
+    <p id="deskripsi" style="color:#475569"></p>
+
+    <div class="grid-2" style="margin-top:16px">
+      <div class="card">
+        <h3>Peta Lokasi</h3>
+        <iframe
+          style="width:100%;height:320px;border:0;border-radius:16px"
+          src="https://maps.google.com/maps?q=Kabupaten+Katingan&output=embed">
+        </iframe>
+      </div>
+      <div class="card">
+        <h3>Potensi UMKM</h3>
+        <div id="umkm" class="grid-2" style="margin-top:10px"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px">
+      <h3>Galeri Foto Desa</h3>
+      <div id="galeri" class="gallery" style="margin-top:12px"></div>
+    </div>
+  </div>
+</section>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
