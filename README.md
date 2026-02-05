@@ -67,31 +67,6 @@ Sistem ini memudahkan warga dalam pengajuan surat serta membantu perangkat desa 
 
 ---
 
-## 📁 Struktur Folder
-istem-informasi-desa/
-├── frontend/
-│ ├── assets/
-│ │ ├── css/
-│ │ ├── img/
-│ │ └── js/
-│ ├── index.html
-│ ├── login.html
-│ ├── register.html
-│ ├── pengajuan.html
-│ ├── tracking.html
-│ └── profil.html
-│
-├── backend/
-│ ├── api/
-│ ├── config/
-│ └── admin/
-│
-├── database.sql
-└── README.md
-
-
----
-
 ## ⚙️ Cara Menjalankan Secara Lokal
 1. Clone repository ini
 2. Import file `database.sql` ke MySQL
