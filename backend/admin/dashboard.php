@@ -58,6 +58,21 @@ cekRole(['admin','kepala_desa','sekretaris','kaur']);
 
 </div>
 
+<div class="card" style="margin-top:20px">
+  <h3>Data Warga</h3>
+  <table class="table" style="margin-top:10px">
+    <thead>
+      <tr>
+        <th>NIK</th>
+        <th>Nama</th>
+        <th>JK</th>
+        <th>Pekerjaan</th>
+      </tr>
+    </thead>
+    <tbody id="tblWarga"></tbody>
+  </table>
+</div>
+
 <script src="assets/js/dashboard.js"></script>
 </body>
 </html>

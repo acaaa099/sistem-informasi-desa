@@ -31,9 +31,42 @@
 
     <div class="card" style="margin-top:14px">
       <h3>Grafik Penduduk</h3>
-      <canvas id="chartPenduduk" height="140"></canvas>
+      <canvas id="chartPenduduk" height="100"></canvas>
     </div>
   </main>
+</div>
+<div class="card" style="margin-bottom:14px">
+  <h3>Tambah Warga</h3>
+
+<form id="formWarga">
+  <input class="input" id="w_nik" placeholder="NIK" required />
+  <input class="input" id="w_nama" placeholder="Nama" required />
+
+  <select class="input" id="w_jk" required>
+    <option value="">-- Jenis Kelamin --</option>
+    <option value="L">Laki-laki</option>
+    <option value="P">Perempuan</option>
+  </select>
+
+  <input class="input" id="w_pekerjaan" placeholder="Pekerjaan" required />
+
+  <button class="btn btn-primary full" type="submit">Simpan</button>
+</form>
+
+<div class="card" style="margin-top:20px">
+  <h3>Data Warga</h3>
+
+  <table class="table" style="margin-top:12px">
+    <thead>
+      <tr>
+        <th>NIK</th>
+        <th>Nama</th>
+        <th>JK</th>
+        <th>Pekerjaan</th>
+      </tr>
+    </thead>
+    <tbody id="tblWarga"></tbody>
+  </table>
 </div>
 
 <script src="../assets/js/config.js"></script>

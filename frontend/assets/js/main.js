@@ -1,26 +1,61 @@
-// ===== REGISTER =====
+/* =========================================================
+   KONFIG & AUTH HELPER
+========================================================= */
+
+async function authMe(){
+  const token = getToken();
+  if(!token) return null;
+
+  const res = await fetch(`${BASE_API}/auth-me.php`,{
+    headers:{ Authorization:`Bearer ${token}` }
+  });
+
+  if(!res.ok) return null;
+  const d = await res.json();
+  return d.me || null;
+}
+
+async function requireAdmin(){
+  const me = await authMe();
+  if(!me){
+    location.href = "../login.html";
+    return null;
+  }
+  const allowed = ["admin","kepala_desa","sekretaris","kaur"];
+  if(!allowed.includes(me.role)){
+    location.href = "../index.html";
+    return null;
+  }
+  return me;
+}
+
+/* =========================================================
+   REGISTER
+========================================================= */
 const regForm = document.getElementById("registerForm");
 if(regForm){
-  regForm.addEventListener("submit", async (e)=>{
+  regForm.addEventListener("submit", async e=>{
     e.preventDefault();
-    const username = document.getElementById("reg_username").value;
-    const password = document.getElementById("reg_password").value;
+    const username = reg_username.value.trim();
+    const password = reg_password.value;
 
     const res = await fetch(`${BASE_API}/auth-register.php`,{
       method:"POST",
       headers:{ "Content-Type":"application/json" },
       body: JSON.stringify({ username, password })
     });
-    const data = await res.json();
-    document.getElementById("reg_msg").innerText = data.message || "";
-    if(data.success) setTimeout(()=>location.href="login.html",700);
+    const d = await res.json();
+    reg_msg.innerText = d.message || "";
+    if(d.success) setTimeout(()=>location.href="login.html",800);
   });
 }
 
-// ===== LOGIN =====
+/* =========================================================
+   LOGIN
+========================================================= */
 const loginForm = document.getElementById("loginForm");
 if(loginForm){
-  loginForm.addEventListener("submit", async (e)=>{
+  loginForm.addEventListener("submit", async e=>{
     e.preventDefault();
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
@@ -30,170 +65,271 @@ if(loginForm){
       headers:{ "Content-Type":"application/json" },
       body: JSON.stringify({ username, password })
     });
-    const data = await res.json();
+    const d = await res.json();
 
-    if(!data.success){
-      document.getElementById("loginError").innerText = data.message || "Login gagal";
+    if(!d.success){
+      loginError.innerText = d.message || "Login gagal";
       return;
     }
 
-    setSession(data.token, data.role);
-
+    setSession(d.token, d.role);
     const staff = ["admin","kepala_desa","sekretaris","kaur"];
-    if(staff.includes(data.role)) location.href = "admin/dashboard.html";
-    else location.href = "index.html";
+    location.href = staff.includes(d.role) ? "admin/dashboard.html" : "index.html";
   });
 }
 
-// ===== PENGAJUAN (opsional kalau ada form) =====
+/* =========================================================
+   PENGAJUAN WARGA
+========================================================= */
 const ajForm = document.getElementById("pengajuanForm");
 if(ajForm){
-  ajForm.addEventListener("submit", async (e)=>{
+  ajForm.addEventListener("submit", async e=>{
     e.preventDefault();
-    const nik = document.getElementById("nik").value;
-    const nama = document.getElementById("nama").value;
-    const jenis = document.getElementById("jenis").value;
-    const keperluan = document.getElementById("keperluan").value;
+    const nik = nik.value;
+    const nama = nama.value;
+    const jenis = jenis.value;
+    const keperluan = keperluan.value;
 
     const res = await fetch(`${BASE_API}/pengajuan-create.php`,{
       method:"POST",
       headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify({ nik, nama, jenis, keperluan })
+      body: JSON.stringify({ nik,nama,jenis,keperluan })
     });
-    const data = await res.json();
-    alert(data.success ? ("Kode Tracking: "+data.kode) : (data.message || "Gagal"));
+    const d = await res.json();
+    alert(d.success ? "Kode Tracking: "+d.kode : d.message);
   });
 }
 
-// ===== TRACKING (opsional kalau ada tombol) =====
+/* =========================================================
+   TRACKING
+========================================================= */
 const trackBtn = document.getElementById("trackBtn");
 if(trackBtn){
   trackBtn.addEventListener("click", async ()=>{
-    const kode = document.getElementById("kode").value;
-    const hasil = document.getElementById("hasil");
-    const res = await fetch(`${BASE_API}/tracking.php?kode=${encodeURIComponent(kode)}`);
-    const d = await res.json();
-    hasil.innerHTML = d.nama ? `<b>${d.nama}</b> — ${d.status}` : "Tidak ditemukan";
+    const kode = document.getElementById("kode").value.trim();
+    if(!kode) return hasil.innerText="Masukkan kode";
+
+    const d = await fetch(`${BASE_API}/tracking.php?kode=${encodeURIComponent(kode)}`)
+      .then(r=>r.json());
+
+    if(!d.nama){
+      hasil.innerText="Tidak ditemukan";
+      return;
+    }
+
+    let html = `
+      <p><b>Nama:</b> ${d.nama}</p>
+      <p><b>Status:</b> ${d.status}</p>
+    `;
+
+    if(d.status==="Disetujui"){
+      html += `
+        <a href="${BASE_API}/surat-download.php?kode=${kode}"
+           target="_blank"
+           class="btn btn-primary"
+           style="margin-top:10px;display:inline-block">
+           Download Surat
+        </a>`;
+    }
+    hasil.innerHTML = html;
   });
 }
 
-// ===== PROFIL + GALERI + UMKM =====
+/* =========================================================
+   PROFIL DESA
+========================================================= */
 async function loadProfil(){
   if(!document.getElementById("namaDesa")) return;
 
   const prof = await fetch(`${BASE_API}/profil.php`).then(r=>r.json());
-  document.getElementById("namaDesa").innerText = prof.nama_desa || "Profil Desa";
-  document.getElementById("deskripsi").innerText = prof.deskripsi || "";
+  namaDesa.innerText = prof.nama_desa || "Profil Desa";
+  deskripsi.innerText = prof.deskripsi || "";
 
   const umkm = await fetch(`${BASE_API}/umkm.php`).then(r=>r.json());
-  document.getElementById("umkm").innerHTML = umkm.map(x=>`
-    <div class="card"><h4>${x.nama}</h4><p>${x.deskripsi}</p></div>
+  document.getElementById("umkm").innerHTML = umkm.map(u=>`
+    <div class="card"><h4>${u.nama}</h4><p>${u.deskripsi}</p></div>
   `).join("");
 
   const galeri = await fetch(`${BASE_API}/galeri.php`).then(r=>r.json());
   document.getElementById("galeri").innerHTML = galeri.map(g=>`
     <figure class="g-item">
-      <img src="assets/img/${g.filename}" alt="${g.keterangan||""}">
+      <img src="assets/img/${g.filename}">
       <figcaption>${g.keterangan||""}</figcaption>
     </figure>
   `).join("");
 }
 loadProfil();
 
-// ===== ADMIN DASHBOARD =====
+/* =========================================================
+   ADMIN DASHBOARD
+========================================================= */
 async function loadAdminDashboard(){
-  const chartEl = document.getElementById("chartPenduduk");
-  if(!chartEl) return;
+  const chart = document.getElementById("chartPenduduk");
+  if(!chart) return;
 
   await requireAdmin();
-
-  const res = await fetch(`${BASE_API}/demografi.php`,{
+  const d = await fetch(`${BASE_API}/demografi.php`,{
     headers:{ Authorization:`Bearer ${getToken()}` }
-  });
-  const d = await res.json();
+  }).then(r=>r.json());
 
-  document.getElementById("total").innerText = d.total;
-  document.getElementById("laki").innerText = d.laki;
-  document.getElementById("perempuan").innerText = d.perempuan;
-  document.getElementById("dusun").innerText = d.dusun;
+  total.innerText = d.total;
+  laki.innerText = d.laki;
+  perempuan.innerText = d.perempuan;
+  dusun.innerText = d.dusun;
 
-  new Chart(chartEl,{
+  new Chart(chart,{
     type:"doughnut",
-    data:{ labels:["Laki-laki","Perempuan"], datasets:[{ data:[d.laki,d.perempuan] }] }
+    data:{ labels:["Laki","Perempuan"], datasets:[{ data:[d.laki,d.perempuan] }] }
   });
 }
 loadAdminDashboard();
 
-// ===== ADMIN PENGAJUAN LIST =====
+async function updateStatusPengajuan(id,status){
+  await fetch(`${BASE_API}/admin-pengajuan-update.php`,{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      Authorization:`Bearer ${getToken()}`
+    },
+    body:JSON.stringify({id,status})
+  });
+}
+
+
+/* =========================================================
+   ADMIN - PENGAJUAN SURAT
+========================================================= */
+
 async function loadAdminPengajuan(){
   const tbody = document.getElementById("tblPengajuan");
   if(!tbody) return;
 
+  try{
+    const res = await fetch(`${BASE_API}/admin-pengajuan-list.php`);
+    const rows = await res.json();
+
+    tbody.innerHTML = rows.map(r=>`
+      <tr>
+        <td>${r.created_at || "-"}</td>
+        <td>${r.nama}</td>
+        <td>${r.nik}</td>
+        <td>${r.nama_surat || "-"}</td>
+        <td><code>${r.tracking_code}</code></td>
+        <td>
+          <select onchange="updateStatus(${r.id},this.value)">
+            ${["Diproses","Disetujui","Ditolak"].map(s=>`
+              <option ${s===r.status?"selected":""}>${s}</option>
+            `).join("")}
+          </select>
+        </td>
+      </tr>
+    `).join("");
+
+  }catch(e){
+    tbody.innerHTML = `<tr><td colspan="6" style="color:red">Gagal memuat data</td></tr>`;
+  }
+}
+
+async function updateStatus(id,status){
+  await fetch(`${BASE_API}/admin-pengajuan-update.php`,{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({id,status})
+  });
+}
+
+loadAdminPengajuan();
+
+
+
+/* =========================================================
+   ADMIN – CRUD WARGA (FIX TOTAL)
+========================================================= */
+
+// READ
+async function loadAdminWarga(){
+  const tbody = document.getElementById("tblWarga");
+  if(!tbody) return;
+
   await requireAdmin();
 
-  const rows = await fetch(`${BASE_API}/admin-pengajuan-list.php`,{
+  const rows = await fetch(`${BASE_API}/admin-warga.php`,{
     headers:{ Authorization:`Bearer ${getToken()}` }
   }).then(r=>r.json());
 
-  tbody.innerHTML = rows.map(r=>`
+  tbody.innerHTML = rows.map(w=>`
     <tr>
-      <td>${r.created_at}</td>
-      <td>${r.nama}</td>
-      <td>${r.nik}</td>
-      <td>${r.nama_surat}</td>
-      <td><code>${r.tracking_code}</code></td>
+      <td>${w.nik}</td>
+      <td>${w.nama}</td>
+      <td>${w.jenis_kelamin}</td>
+      <td>${w.pekerjaan}</td>
       <td>
-        <select class="statusSel" data-id="${r.id}">
-          ${["Diproses","Disetujui","Ditolak"].map(s=>`
-            <option ${s===r.status?"selected":""}>${s}</option>
-          `).join("")}
-        </select>
+        <button onclick="hapusWarga('${w.nik}')" style="color:red">Hapus</button>
       </td>
     </tr>
   `).join("");
+}
+loadAdminWarga();
 
-  document.querySelectorAll(".statusSel").forEach(sel=>{
-    sel.addEventListener("change", async ()=>{
-      const id = sel.dataset.id;
-      const status = sel.value;
+// CREATE
+const formWarga = document.getElementById("formWarga");
+if(formWarga){
+  formWarga.addEventListener("submit", async e=>{
+    e.preventDefault();
 
-      const out = await fetch(`${BASE_API}/admin-pengajuan-update.php`,{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json",
-          Authorization:`Bearer ${getToken()}`
-        },
-        body: JSON.stringify({ id, status })
-      }).then(r=>r.json());
+    const nik = w_nik.value.trim();
+    const nama = w_nama.value.trim();
+    const jenis_kelamin = w_jk.value;
+    const pekerjaan = w_pekerjaan.value.trim();
 
-      if(!out.success) alert(out.message || "Gagal update");
+    if(!nik||!nama||!jenis_kelamin||!pekerjaan){
+      alert("Data tidak lengkap");
+      return;
+    }
+
+    const res = await fetch(`${BASE_API}/admin-warga-create.php`,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        Authorization:`Bearer ${getToken()}`
+      },
+      body: JSON.stringify({ nik,nama,jenis_kelamin,pekerjaan })
     });
+
+    const d = await res.json();
+    alert(d.message);
+    if(d.success){
+      formWarga.reset();
+      loadAdminWarga();
+    }
   });
 }
-loadAdminPengajuan();
 
-// ===== LOAD JENIS SURAT DARI DATABASE =====
+// DELETE
+async function hapusWarga(nik){
+  if(!confirm("Hapus warga ini?")) return;
+
+  await fetch(`${BASE_API}/admin-warga-delete.php`,{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      Authorization:`Bearer ${getToken()}`
+    },
+    body: JSON.stringify({ nik })
+  });
+
+  loadAdminWarga();
+}
+
+/* =========================================================
+   JENIS SURAT
+========================================================= */
 async function loadJenisSurat(){
   const el = document.getElementById("jenis");
-  if(!el){
-    console.log("❌ select #jenis tidak ditemukan");
-    return;
-  }
+  if(!el) return;
 
-  try{
-    const res = await fetch(`${BASE_API}/jenis-surat.php`);
-    console.log("STATUS:", res.status);
-
-    const data = await res.json();
-    console.log("DATA JENIS SURAT:", data);
-
-    el.innerHTML =
-      `<option value="">-- Pilih Jenis Surat --</option>` +
-      data.map(j=>`
-        <option value="${j.id}">${j.nama_surat}</option>
-      `).join("");
-  }catch(err){
-    console.error("❌ Gagal load jenis surat:", err);
-  }
+  const data = await fetch(`${BASE_API}/jenis-surat.php`).then(r=>r.json());
+  el.innerHTML = `<option value="">-- Pilih Jenis Surat --</option>` +
+    data.map(j=>`<option value="${j.id}">${j.nama_surat}</option>`).join("");
 }
 loadJenisSurat();

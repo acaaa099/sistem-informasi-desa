@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - Data Warga</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<div class="admin-layout">
+  <aside class="sidebar">
+    <h2>Admin Desa</h2>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="pengajuan.html">Pengajuan Surat</a>
+    <a href="warga.html">Data Warga</a>
+    <a href="../profil.html">Profil Desa</a>
+    <a href="#" onclick="doLogout('../login.html')" style="color:#facc15">Logout</a>
+  </aside>
+
+  <main class="admin-main">
+    <h1>Manajemen Data Warga</h1>
+
+    <!-- FORM TAMBAH -->
+    <div class="card">
+      <h3>Tambah Warga</h3>
+      <input class="input" id="nik" placeholder="NIK">
+      <input class="input" id="nama" placeholder="Nama">
+      <select class="input" id="jk">
+        <option value="">Jenis Kelamin</option>
+        <option value="L">Laki-laki</option>
+        <option value="P">Perempuan</option>
+      </select>
+      <input class="input" id="alamat" placeholder="Alamat">
+      <input class="input" id="pekerjaan" placeholder="Pekerjaan">
+      <button class="btn btn-primary" onclick="tambahWarga()">Tambah</button>
+    </div>
+
+    <!-- TABEL -->
+    <table class="table" style="margin-top:18px">
+      <thead>
+        <tr>
+          <th>NIK</th><th>Nama</th><th>JK</th><th>Pekerjaan</th><th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="tblWarga"></tbody>
+    </table>
+  </main>
+</div>
+
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/main.js"></script>
+
+<script>
+async function tambahWarga(){
+  const data = {
+    nik: nik.value,
+    nama: nama.value,
+    jenis_kelamin: jk.value,
+    alamat: alamat.value,
+    pekerjaan: pekerjaan.value
+  };
+
+  const res = await fetch(`${BASE_API}/admin-warga-create.php`,{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      Authorization:`Bearer ${getToken()}`
+    },
+    body: JSON.stringify(data)
+  });
+
+  const out = await res.json();
+  if(out.success) location.reload();
+  else alert(out.message);
+}
+
+async function hapusWarga(nik){
+  if(!confirm("Hapus data warga?")) return;
+
+  await fetch(`${BASE_API}/admin-warga-delete.php`,{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      Authorization:`Bearer ${getToken()}`
+    },
+    body: JSON.stringify({ nik })
+  });
+  location.reload();
+}
+</script>
+
+</body>
+</html>
