@@ -68,4 +68,55 @@ Sistem ini memudahkan warga dalam pengajuan surat serta membantu perangkat desa 
 ---
 
 ## 📁 Struktur Folder
+istem-informasi-desa/
+├── frontend/
+│ ├── assets/
+│ │ ├── css/
+│ │ ├── img/
+│ │ └── js/
+│ ├── index.html
+│ ├── login.html
+│ ├── register.html
+│ ├── pengajuan.html
+│ ├── tracking.html
+│ └── profil.html
+│
+├── backend/
+│ ├── api/
+│ ├── config/
+│ └── admin/
+│
+├── database.sql
+└── README.md
+
+
+---
+
+## ⚙️ Cara Menjalankan Secara Lokal
+1. Clone repository ini
+2. Import file `database.sql` ke MySQL
+3. Atur koneksi database di `backend/config/koneksi.php`
+4. Jalankan backend menggunakan server PHP (XAMPP / Laragon)
+5. Buka `frontend/index.html` melalui browser
+
+---
+
+## 🌐 Hosting
+- **Frontend**: Netlify
+- **Backend**: Manual 
+- **Database**: MySQL (InfinityFree)
+
+---
+
+Masih dapat dikembangkan lebih lanjut sesuai kebutuhan desa.
+
+---
+
+## ✍️ Penulis
+**Nama**: (Tasya Apriliani)  
+**Program Studi**: (Teknik Informatika)  
+**Institusi**: (Universitas Palangkaraya)  
+**Tahun**: 2026
+
+
 
