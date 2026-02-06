@@ -83,7 +83,142 @@ Sistem ini memudahkan warga dalam pengajuan surat serta membantu perangkat desa 
 
 ---
 
-Masih dapat dikembangkan lebih lanjut sesuai kebutuhan desa.
+# Sistem Informasi Desa Digital
+
+Prototype **Sistem Informasi Desa Digital** berbasis web yang dirancang untuk mendukung pelayanan administrasi desa secara **cepat, transparan, dan terintegrasi**.  
+Sistem ini mencakup pengelolaan data warga, pengajuan surat online, tracking status surat, serta dashboard admin berbasis role.
+
+🔗 **Live Demo (Frontend)**  
+https://sistem-informasi-desa-digital00.netlify.app/login.html
+
+🔗 **Repository GitHub**  
+https://github.com/acaaa099/sistem-informasi-desa
+
+---
+
+## 🎯 Tujuan Pengembangan
+Website ini dikembangkan sebagai **prototype pembelajaran** untuk:
+- Digitalisasi layanan administrasi desa
+- Penerapan konsep client–server (frontend & backend)
+- Implementasi autentikasi, role-based access, dan API
+- Edukasi keamanan siber dasar melalui kontrol akses dan validasi data
+
+---
+
+## 🧩 Fitur Utama
+- 🔐 **Autentikasi & Role**
+  - Admin, Kepala Desa, Sekretaris, Kaur, Warga
+- 👥 **Manajemen Data Warga (CRUD)**
+- 📝 **Pengajuan Surat Online**
+- 🔍 **Tracking Status Pengajuan**
+- 📊 **Dashboard Statistik Kependudukan**
+- 🖨️ **Download Surat (HTML → Print/PDF)**
+- 🏘️ **Profil Desa, UMKM, dan Galeri**
+
+---
+
+## 🛠️ Teknologi yang Digunakan
+**Frontend**
+- HTML5
+- CSS3
+- JavaScript (Vanilla)
+- Chart.js
+
+**Backend**
+- PHP (Native)
+- REST API
+- MySQL
+- JSON Web Communication
+- Token-based Authentication
+
+**Tools Pendukung**
+- XAMPP
+- phpMyAdmin
+- Netlify (Frontend Hosting)
+- GitHub
+
+---
+
+## ⚙️ Cara Menjalankan Website (Local Development)
+
+### 1️⃣ Persiapan
+- Install **XAMPP**
+- Aktifkan **Apache** & **MySQL**
+
+### 2️⃣ Setup Database
+1. Buka `phpMyAdmin`
+2. Buat database:
+
+
+---
+
+## 👤 Akun Default (Contoh)
+| Role  | Keterangan |
+|------|-----------|
+| Admin | Mengelola data warga & pengajuan |
+| Warga | Mengajukan dan tracking surat |
+
+> Akun dapat dibuat melalui halaman **Register**
+
+---
+
+## ⚠️ Tantangan dan Solusi
+
+### 1. Pemisahan Frontend dan Backend
+**Tantangan:**  
+Frontend dan backend berjalan pada domain berbeda sehingga memunculkan masalah CORS.
+
+**Solusi:**  
+Menambahkan konfigurasi **CORS Header** pada API backend agar frontend dapat mengakses data dengan aman.
+
+---
+
+### 2. Manajemen Role dan Hak Akses
+**Tantangan:**  
+Membatasi akses fitur sesuai peran pengguna (admin dan warga).
+
+**Solusi:**  
+Mengimplementasikan **token-based authentication** dan validasi role pada setiap endpoint API.
+
+---
+
+### 3. Konsistensi Data Pengajuan dan Warga
+**Tantangan:**  
+Pengajuan surat harus terhubung dengan data warga yang valid.
+
+**Solusi:**  
+Validasi NIK pada proses pengajuan agar hanya warga terdaftar yang dapat mengajukan surat.
+
+---
+
+### 4. Kompleksitas Kode pada Tahap Prototipe
+**Tantangan:**  
+Beberapa fungsi ditulis berulang untuk memperjelas alur kerja.
+
+**Solusi:**  
+Pendekatan ini dipilih secara sadar untuk **kejelasan pembelajaran**, dengan rencana refactoring pada tahap lanjutan.
+
+---
+
+## 🚀 Rencana Pengembangan
+
+Beberapa rencana pengembangan lanjutan yang dapat dilakukan:
+
+- 🔒 Implementasi HTTPS dan Security Headers
+- 📑 Export surat ke format PDF otomatis
+- 🧑‍💼 Modul manajemen akun admin
+- 📈 Logging dan audit aktivitas pengguna
+- 🔔 Notifikasi status pengajuan (Email / WhatsApp)
+- 🔧 Refactoring dan modularisasi kode
+- 🌐 Deployment backend ke server produksi
+
+---
+
+## 📌 Catatan
+Project ini dikembangkan sebagai **prototype edukatif**, sehingga fokus utama adalah:
+- Ketercapaian fungsi
+- Kejelasan alur sistem
+- Penerapan konsep jaringan, API, dan keamanan dasar
 
 ---
 
